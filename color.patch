@@ -1,0 +1,32 @@
+diff --git a/src/Plugin/Field/FieldFormatter/ColorboxFormatter.php b/src/Plugin/Field/FieldFormatter/ColorboxFormatter.php
+index 6987973..8eda1f8 100644
+--- a/src/Plugin/Field/FieldFormatter/ColorboxFormatter.php
++++ b/src/Plugin/Field/FieldFormatter/ColorboxFormatter.php
+@@ -361,12 +361,12 @@ class ColorboxFormatter extends ImageFormatterBase implements ContainerFactoryPl
+     $cache_tags = [];
+     if (!empty($settings['colorbox_node_style']) && $settings['colorbox_node_style'] != 'hide') {
+       $image_style = $this->imageStyleStorage->load($settings['colorbox_node_style']);
+-      $cache_tags = $image_style->getCacheTags();
++      $cache_tags = ($image_style)?$image_style->getCacheTags():[];
+     }
+     $cache_tags_first = [];
+     if (!empty($settings['colorbox_node_style_first'])) {
+       $image_style_first = $this->imageStyleStorage->load($settings['colorbox_node_style_first']);
+-      $cache_tags_first = $image_style_first->getCacheTags();
++      $cache_tags_first = ($image_style_first)?$image_style_first->getCacheTags():[];
+     }
+ 
+     foreach ($files as $delta => $file) {
+@@ -374,12 +374,12 @@ class ColorboxFormatter extends ImageFormatterBase implements ContainerFactoryPl
+       if ($delta == 0 && !empty($settings['colorbox_node_style_first'])) {
+         $settings['style_first'] = TRUE;
+         $settings['style_name'] = $settings['colorbox_node_style_first'];
+-        $cache_tags = Cache::mergeTags($cache_tags_first, $file->getCacheTags());
++        $cache_tags = Cache::mergeTags($cache_tags_first, $file?$file->getCacheTags():[]);
+       }
+       else {
+         $settings['style_first'] = FALSE;
+         $settings['style_name'] = $settings['colorbox_node_style'];
+-        $cache_tags = Cache::mergeTags($cache_tags, $file->getCacheTags());
++        $cache_tags = Cache::mergeTags($cache_tags, $file?$file->getCacheTags():[]);
+       }
